@@ -2,11 +2,6 @@
 
 exports[`testing snapshot render correctly 1`] = `
 <div>
-  <h2
-    style="text-align: center;"
-  >
-     Pagination App 
-  </h2>
   <div
     data-test="component-pagination"
   >

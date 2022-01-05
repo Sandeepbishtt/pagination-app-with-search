@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from './PostSlice'
+import {configureStore} from '@reduxjs/toolkit'
+
+import PaginationSlice from './Reducer'
 
 export default configureStore({
-  reducer: {
-    data: cartReducer.reducer,
-  },
-});
+	reducer:{
+		data:PaginationSlice.reducer
+	}
+})

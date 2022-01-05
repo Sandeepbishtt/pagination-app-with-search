@@ -1,42 +1,39 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import PaginationTable from "./components/PaginationTable";
-import { addData } from "./Redux/PostSlice";
+import React,{useState,useEffect} from 'react';
+import {BrowserRouter,Switch,Route} from 'react-router-dom'
+import PaginationTable from './Components/PaginationTable'
+import axios from 'axios'
+import {useDispatch} from 'react-redux'
+import {addData,showLoading} from './Redux/Reducer'
 
-const App = () => {
-  const dispatch = useDispatch();
-  const [page, setPage] = useState(0);
-  const [showLoading , setShowLoading] = useState(true)
+function App() {
 
-  useEffect(() => {
-    axios
-    .get(
-      `https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${page}`
-      )
-      .then((response) => {
-        dispatch(addData(response.data));
-        setShowLoading(false)
-      })
-      .catch((error) => console.log(error));
-  }, [page]);
+  const dispatch = useDispatch()
+const [page,setPage] = useState(0)
+useEffect(()=>{
+axios.get(`https://hn.algolia.com/api/v1/search_by_date?tags=story&page=${page}`)
+.then((response)=>{
+  dispatch(addData(response.data))
+  dispatch(showLoading())
+})
+.catch(error => console.log(error))
+},[page])
 
-
-
-  useEffect(() => {
-    const interval = setTimeout(() => {
-      setPage((prev) => prev + 1);
-    }, 10000);
-    if(page === 49){
-      clearTimeout(interval)
-    }
-  }, [page]);
+useEffect(()=>{
+  const interval = setTimeout(()=>{
+    setPage(prev=> prev+1)
+  },10000)
+  if(page === 49){
+    clearTimeout(interval)
+  }
+})
 
   return (
-    <>
-     <h1 style={{textAlign:'center'}}>Pagination with API</h1>
-      <PaginationTable pageNumber={page} showLoad = {showLoading} />
-    </>
+    <BrowserRouter data-test='component-app'>
+    <h2 style={{textAlign:'center'}} > Pagination App </h2>
+     <Switch>
+     <Route exact path='/' render={(props)=> <PaginationTable pageNumber={page}/>}  />
+     </Switch>
+    </BrowserRouter>
   );
 }
 
